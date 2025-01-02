@@ -218,7 +218,10 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+	// return ((!!x)&y) | ((!x)&z);
+	// return ((~(!x))>>31 & y) | ((~(~(!x)))>>31) & z;
+	int flag = (~(!x))<<31>>31;
+	return (flag & y) | ((~flag) & z);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
