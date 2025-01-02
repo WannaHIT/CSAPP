@@ -168,7 +168,7 @@ int isTmax(int x) {
 	// return !(x ^ 0x80000000);// No 0x80000000 allowed
 	// return ! ~((x + 1) ^ x);// 0x7fffffff failed 
 	// return !((~(x+1))^x) & !!((x+1)^0x0); // PASS 
-	return !((~(x+1))^x) & !!((x+1)); // more Concise No need ^0x0 
+	return !((~(x+1))^x) & !!((x+1)); // more Concise No need ^0x0  
 }
 /* 
  * allOddBits - return 1 if all odd-numbered bits in word set to 1
@@ -179,7 +179,13 @@ int isTmax(int x) {
  *   Rating: 2
  */
 int allOddBits(int x) {
-  return 2;
+	// x == 0x0x 0x0x;
+	// 我以为只能一个表达式返回，卡了半天，还是参考了网上，可惜，难受
+	int a = 0xa;
+	int aa = a | (a << 4);
+	int aaaa = aa | (aa << 8);
+	int aaaaaaaa = aaaa | (aaaa << 16);
+	return !((x & aaaaaaaa) ^ aaaaaaaa);
 }
 /* 
  * negate - return -x 
@@ -189,7 +195,7 @@ int allOddBits(int x) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+  return ~x + 1;
 }
 //3
 /* 
@@ -202,7 +208,7 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+  return !(x>>4 ^ 3) & !(((x&0xf)+0x6)>>4);
 }
 /* 
  * conditional - same as x ? y : z 
