@@ -231,7 +231,18 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+	// x = ~x + 1;
+	// int carry = (x & y)<<1;
+	// int sum =  ((x ^ y) | carry);
+	// int flag = sum >> 31;
+	// return !(x^y) | !!(flag);
+	// 上面的都是错的，需要循环才行
+	int sing_x = x >> 31;
+	int sign_y = y >> 31;
+	int flag = ~(((sing_x)) ^ ((sign_y))); // 同号全1
+	int result = y + ((~x) + 1);
+	// return !!(flag & result) | !((sing_x ^ 0x1)&0x1);
+	return (!((flag & result)>>31)&flag) | ((sing_x & 0x1)& (~flag));
 }
 //4
 /* 
