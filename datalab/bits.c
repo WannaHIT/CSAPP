@@ -254,7 +254,23 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-  return 2;
+	//int sum, res;
+	//x = x & (~(1<<31));
+	//sum = ~(1 << 31);
+	//res =  ((x+sum)>>31) & 1;
+	//return res | (2 + ~x);
+	
+	int sum, res;
+    int flag = x >> 31; // 负的全1, 正的全0 
+    sum = ~(1<<31);
+    res = ((x+sum)>>31) & 1;
+    return (~flag & (2+(~res))) | ( flag & 0);
+		
+	// Others solution
+	/*int negX = ~x + 1;
+	int sign = (negX | x) >> 31;
+	return sign + 1;
+	*/ 
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
