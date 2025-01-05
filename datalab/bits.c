@@ -285,7 +285,31 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+	// 意思是符号位（包括延续）不论占多少都只算一位，有效数字位每个都占一位
+	int b16, b8, b4, b2, b1, b0;
+	int sign = x >> 31;
+	x = (sign & ~x) | (~sign & x);
+	// bin search 核心思想
+	// 先看看高16位有没有1,有就返回1 
+	// 有就左移16位， 没有就不动
+	// 实现了一分为二的效果
+	b16 = (!!(x >> 16)) << 4;
+	x = x >> b16;
+
+	b8 = !!(x >> 8) << 3;
+	x = x >> b8;
+
+	b4 = !!(x >> 4) << 2;
+	x = x >> b4;
+
+	b2 = !!(x >> 2) << 1;
+	x = x >> b2;
+
+	b1 = !!(x >> 1);
+	x = x >> b1;
+
+	b0 = x;
+	return b16+b8+b4+b2+b1+b0+1;
 }
 //float
 /* 
