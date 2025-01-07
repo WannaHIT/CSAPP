@@ -309,7 +309,7 @@ int howManyBits(int x) {
 	x = x >> b1;
 
 	b0 = x;
-	return b16+b8+b4+b2+b1+b0+1;
+	return b16 + b8 + b4 + b2 + b1 + b0 + 1;
 }
 //float
 /* 
@@ -324,7 +324,34 @@ int howManyBits(int x) {
  *   Rating: 4
  */
 unsigned floatScale2(unsigned uf) {
-  return 2;
+	// s, expr, frac
+	// 1, 8,    23
+	unsigned s = (uf >> 31) & 0x1;
+	unsigned expr = (uf >> 23) & 0xff;
+	unsigned frac = uf & (0x7fffff);
+
+	// multiple by 2
+	// 0
+	if((expr==0) && (frac==0))
+		return uf; 
+
+	// infinity or NaN
+	if(expr == 0xff)
+		return uf;
+	
+	// subnormalize
+	if(expr == 0){
+		// E = 1 -bias
+		// frac 
+		// frac << 1; // ERROR
+		frac <<= 1;
+		return (s << 31) | frac;
+	}
+
+	// normalize
+	expr++;
+	// E = e - 127;
+	return (s << 31) | (expr << 23) | (frac);
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
