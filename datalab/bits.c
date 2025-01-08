@@ -339,7 +339,7 @@ unsigned floatScale2(unsigned uf) {
 	if(expr == 0xff)
 		return uf;
 	
-	// subnormalize
+	// denormalize
 	if(expr == 0){
 		// E = 1 -bias
 		// frac 
@@ -366,7 +366,31 @@ unsigned floatScale2(unsigned uf) {
  *   Rating: 4
  */
 int floatFloat2Int(unsigned uf) {
-  return 2;
+	// 这道题被这个无符号数坑惨了，到处找补
+	unsigned  exp, frac, E, SIGN, res;
+	SIGN = uf >> 31;
+	exp = (uf >> 23) & 0xff;
+	frac = (uf) & 0x7fffff;
+	E = exp - 127;	
+	if(exp==0 && frac==0)
+		return 0;
+
+	// infinity 
+	if(exp==0xff)
+		return 0x80000000u;
+	// denormalize
+	if(exp==0 || exp<=126)
+		// return (s<<31) | frac;
+		return 0x0;
+	// should consider out of range 
+	if( E >= 32 ) return 0x80000000u;
+	res = (1<<E) | ((frac)>>(23-E));
+	// cause SIGN is unsigned type, so it did't work 
+	// return (~SIGN & res) | (SIGN & ((~res)+1));
+	if(SIGN==0) 
+		return res;
+	else
+		return (~res)+1;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
