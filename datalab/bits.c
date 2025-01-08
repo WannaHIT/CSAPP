@@ -406,5 +406,11 @@ int floatFloat2Int(unsigned uf) {
  *   Rating: 4
  */
 unsigned floatPower2(int x) {
-    return 2;
+	// 题目还是老样子，转为二进制的float 
+	int E;
+	E = x;
+	if(E < -149) return 0;
+	if(E < -126)  return 1 << (149 - E);
+	if(E > 127 ) return 0x7f800000;
+	return (E + 127) << 23;
 }
