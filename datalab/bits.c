@@ -260,6 +260,7 @@ int logicalNeg(int x) {
 	//res =  ((x+sum)>>31) & 1;
 	//return res | (2 + ~x);
 	
+	// 灵光一现，龟龟
 	int sum, res;
     int flag = x >> 31; // 负的全1, 正的全0 
     sum = ~(1<<31);
