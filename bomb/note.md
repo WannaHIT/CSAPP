@@ -20,6 +20,10 @@ si(step into)
 
 # 进入汇编模式
 layout asm 
+# 退出汇编模式
+layout none 
+# 或者
+tui disable # 好用
 
 refresh # 刷新上面的汇编代码防止字体重叠
 
@@ -152,11 +156,15 @@ x/x $rbx
 
 **更多示例：**
 
-```gdb
+```bash
 x/s $rbx   # 将地址中的值作为字符串显示
+
 x/d $rbx   # 将地址中的值以十进制显示
+
 x/x $rbx   # 将地址中的值以十六进制显示
+
 x/4x $rbx  # 查看从地址开始的 4 个字节内容（以十六进制显示）
+
 x/4i $rbx  # 将地址中的内容解释为汇编指令
 ```
 
@@ -249,6 +257,29 @@ Undefined command: "0x7fffffffda44".  Try "help".
 # 使用 x 查看指定地址的内容
 (gdb)  x 0x7fffffffda44
 0x7fffffffda44: 0x02
+```
 
+```bash
+# 如果$rbp 的值是个地址的时候
+(gdb) info registers       # 查看寄存器，包括 $rbp 的值
+(gdb) x/wx $rbp - 0x14     # 查看该地址的值（以 4 字节十六进制形式显示）
+(gdb) x/wd $rbp - 0x14     # 以十进制显示值
+
+# 查看ecx的字符值
+(gdb)  p /c $ecx 
+
+```
+
+## phase_5
+
+```bash
+
+# flyers，这是字符串对比函数的一个参数
+# 其实就是一个6的循环，分别找出6个索引
+# maduiersnfotvbylSo do you ... ，在这里找6个索引分别对应上字母就行
+# 而不是输入"flyers"本身，对于输入的每个字符'X'--> 二进制的值低4位对应上就行
+# 比如第一个字符f对应的索引是9,输入'X'-->0x_9就行，前面任意，只要是asii的范围
+# flyers的索引分别为9 15 14 5 6 7。这个索引就是我们输入的字符的低4位，那我们只要找到低4位分别是以上数值的字符就可以
+# 任意一个字符的对应值的二进制的低四位能对应上就行
 ```
 
