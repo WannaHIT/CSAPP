@@ -2,6 +2,13 @@
 
 ```bash
 刚开始发现所有的参数都是$rsi，这是因为读入的输入是第一个输入，所以$rdi已经被占用了
+# 多用display
+
+# 多理解地址的意义，尤其是phase_6, 如果这个值是地址
+# 那么就要分清是用 x/x p/x，一个是指向的内容，一个查看地址本身
+# 比如$rdx指向node4, 节点中:(data, next), 
+# 那么p $rdx就是地址, x $rdx就是data，
+# 同理 ($rdx)就是data ,0x8($rdx)就是next
 ```
 
 
@@ -319,5 +326,40 @@ x /12g 0x6032d0 # g：表示以 8 字节（64 位）为单位 打印内存（即
 mov 0x20(%rsp), %rbx	
 # 计算地址并存入寄存器（不读内存）
 lea 0x20(%rsp), %rbx	计算地址并存入寄存器（不读内存）	否
+```
+
+## secret_phase
+
+```bash
+# 在pahase_defused函数里面有secret_phase
+# 但是进入这个函数需要条件，这个条件盲猜应该是完成前六个炸弹
+# 下面这句话也验证了这个猜测，num_input_strings就是输入的答案数量，6个才行
+4015d8:cmpl   $0x6,0x202181(%rip)     # 603760 <num_input_strings>
+
+(gdb)  x/g 0x603760 # gdb中运行完了这句才可以查看
+0x603760 <num_input_strings>:   0x0000000000000006
+# 上面的这个输出也验证了这个猜测
+
+# 查看字符串
+(gdb)  x/s 0x402619
+0x402619:       "%d %d %s
+```
+
+![](../../Pictures/Screenshots/Screenshot from 2025-01-16 21-07-21.png)
+
+​	读取的是第三个炸弹的输入，但是要求却是 %d %d %s，我可以重建一个txt作出对应的修改然后让他跳过
+
+```bash
+# key, 进入fun7之后,以此查看树的结构，因为树根就是rdi
+# 一个节点的结构[data, lchild, rchild, 000类似null]
+x/4g $rdi
+x/5g $rdi
+```
+
+```bash
+# fun7 函数是一个递归查找的函数， 所以i调试时要不停的si进入fun7
+# 在每次比较指定进入左右子树时，重新赋值了$rdi寄存器，$rsi作为查询值不需改变
+# 每次新的$rdi就是新的根结点， 直到$rdi->data == $rsi
+# 所以rax的值应该在函数递归调用的栈里面来计算
 ```
 
