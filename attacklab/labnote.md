@@ -18,6 +18,20 @@ objdump -d ctarget >> ctarget.s # 得到汇编代码
 # 但是遇到了问题，进入gdb之后没有反应
 (gdb) l
 83	main.c: No such file or directory. # 只有这个，没有代码
+# solution！！！！！！！！！
+# GDB 调试的时候，执行 run 的时候一定带上任意输入文件，否则会运行不到断点处
+# 这样就可以查看寄存器的值了：
+# method1：
+gdb --args ./ctarget -q -i c01.txt 
+(gdb) b getbuf
+(gdb) run
+# method2：
+gdb ./ctarget
+(gdb) set args -q -i c01.txt
+(gdb) b getbuf
+(gdb) run
+
+
 
 # disassamble asm也是空的
 # 这时候可以
@@ -36,9 +50,43 @@ objdump -d ctarget >> ctarget.s # 得到汇编代码
 ```
 
 ```bash
-# level 1 . Use vscode 
+# level 1 . Use vscode for file ctarget.s
+# -------------------------------------
+# 在getbuf的汇编代码中
+0x00000000004017b9 <+17>:	add    $0x28,%rsp
+0x00000000004017bd <+21>:	ret
+# 这个ret其实就是pop $rip,
+# rip寄存器存储的就是返回地址
+# --------------------------------------
+
 # file : ctarget.s
 # 通过函数查找来解决这个问题
 find test() -> getbuf() -> ret
+# 缓冲区随便填满，（注意不能是0xa，因为这是换行），然后填入touch1的首地址
 ```
 
+```bash
+# level 2 . Use vscode 
+# 想办法查看栈帧
+# 难点：如何将cookie的值传入%rdi寄存器，所以不能只是像上一题简单调用
+# idea: touch2函数只有一个参数unsigned val
+# -------------------------------------
+# 在getbuf的汇编代码中
+0x00000000004017b9 <+17>:	add    $0x28,%rsp
+0x00000000004017bd <+21>:	ret
+
+# --------------------------------------
+# gdb调试函数
+```
+
+```bash
+# c02.s -> c02.o -> c02_raw.s-> c02_raw.txt -> c02.txt
+gcc -c c02.s c02.o
+objdump -d c02.o > c02_raw.s
+```
+
+![c02](c02_0.png)
+
+
+
+![c02](c02.png)
