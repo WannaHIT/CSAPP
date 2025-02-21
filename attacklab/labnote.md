@@ -25,6 +25,7 @@ objdump -d ctarget >> ctarget.s # 得到汇编代码
 gdb --args ./ctarget -q -i c01.txt 
 (gdb) b getbuf
 (gdb) run
+
 # method2：
 gdb ./ctarget
 (gdb) set args -q -i c01.txt
@@ -66,10 +67,11 @@ find test() -> getbuf() -> ret
 ```
 
 ```bash
-# level 2 . Use vscode 
+# level 2 . 
+# ***************************** 借尸还魂 *************************
 # 想办法查看栈帧
 # 难点：如何将cookie的值传入%rdi寄存器，所以不能只是像上一题简单调用
-# idea: touch2函数只有一个参数unsigned val
+# idea: 只是覆盖返回地址是不够的
 # -------------------------------------
 # 在getbuf的汇编代码中
 0x00000000004017b9 <+17>:	add    $0x28,%rsp
@@ -80,9 +82,9 @@ find test() -> getbuf() -> ret
 ```
 
 ```bash
-# c02.s -> c02.o -> c02_raw.s-> c02_raw.txt -> c02.txt
-gcc -c c02.s c02.o
-objdump -d c02.o > c02_raw.s
+# c02_raw.s -> c02.o -> c02.s -> c02_raw.txt -> c02.txt
+gcc -c c02_raw.s c02.o
+objdump -d c02.o > c02.s
 ```
 
 ![c02](c02_0.png)
@@ -90,3 +92,15 @@ objdump -d c02.o > c02_raw.s
 
 
 ![c02](c02.png)
+
+```bash
+# level 3
+
+```
+
+```bash
+# 参考博客
+https://www.zixiangcode.top/article/csapp-attacklab?theme=photo
+https://zhuanlan.zhihu.com/p/476396465
+```
+
