@@ -11,10 +11,10 @@ int main() {
     long int num;
 	
 	// strtol
-    num = strtol(str, &endptr, 16); // &endptr相当于地址的地址
+    num = strtol(str, &endptr, 10); // &endptr相当于地址的地址
 
     if (*endptr != '\0') {
-        printf("转换失败：输入字符串不是一个有效的整数。未转换部分：%s\n", endptr);
+        printf("转换失败：输入字符串不是一个有效的整数。未转换部分：%s, 转换部分：%ld\n", endptr, num);
     } else {
         printf("转换结果：%ld\n", num);
     }
