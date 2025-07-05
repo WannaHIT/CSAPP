@@ -10,6 +10,10 @@ int foo(int a, int b, int c, int d, int e, int f,int g, int h)
 int main(void)
 {
 	int sum;
+	sum++;
+	sum++;
+	sum++;
+	sum++;
 	sum = foo(1, 2, 3, 4, 5, 6, 7, 8);
 	printf("%d\n", sum);
 	return 0;
