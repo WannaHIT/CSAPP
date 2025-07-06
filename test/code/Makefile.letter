@@ -1,0 +1,18 @@
+CXX = gcc 
+CXXFLAGS = -g -Wall 
+
+SRC = letter.c 
+OBJ = letter
+
+$(OBJ):$(SRC)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+test: letter
+	./letter 0x1234
+	./letter 0xabcd
+	./letter 0xabcd1234
+	./letter 0x1a2b3c4d
+	./letter 0x0
+
+clean:
+	rm -rf letter
