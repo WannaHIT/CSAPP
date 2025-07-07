@@ -1,5 +1,5 @@
 // 卡诺图
-// 
+// PASS, WRONG
 // Sum of Product
 // 乘项之和: 对bool真值表简化的结果
 #include<stdio.h>

@@ -1,0 +1,22 @@
+CXX = gcc 
+CXXFLAGS = -g -Wall 
+
+SRC = ./all_one.c
+OBJ = allone
+
+$(OBJ):$(SRC)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
+
+test: allone
+	./allone 0xffffffffffffffff
+	./allone -1
+	./allone 0xffffff
+	./allone 0x7ff
+	./allone 0xabcd
+	./allone 0x1a2b
+	./allone 0x11111111
+	./allone 0xf
+
+clean:
+	rm -rf allone
