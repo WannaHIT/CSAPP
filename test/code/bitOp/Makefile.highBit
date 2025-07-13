@@ -1,0 +1,21 @@
+CXX = gcc 
+CXXFLAGS = -g -Wall 
+
+SRC = ./highBit.c 
+OBJ = highBit
+
+$(OBJ):$(SRC)
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+
+test: highBit
+	./highBit 0xe
+	./highBit 0xff
+	./highBit 0x800
+	./highBit 0xf0
+	./highBit 0xa0000000
+	./highBit 0xffffffff
+	./highBit 0x3
+
+clean:
+	rm -rf highBit

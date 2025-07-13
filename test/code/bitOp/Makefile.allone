@@ -5,13 +5,14 @@ SRC = ./all_one.c
 OBJ = allone
 
 $(OBJ):$(SRC)
-	$(CXX) $(CXXFLAGS) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $<
 
 
 test: allone
+	./allone 0x7fffffffffffffff
 	./allone 0xffffffffffffffff
-	./allone -1
 	./allone 0xffffff
+	./allone -1
 	./allone 0x7ff
 	./allone 0xabcd
 	./allone 0x1a2b

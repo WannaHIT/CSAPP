@@ -1,0 +1,23 @@
+CXX = gcc
+CXXFLAGS = -g -Wall -O2
+
+SRC = allValidOne.c
+OBJ = allValidOne
+
+$(OBJ):$(SRC)
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+.PHONY:allValidOne, clean
+
+test: allValidOne
+	./allValidOne 0x0
+	./allValidOne 01
+	./allValidOne 0xfe
+	./allValidOne 0xff
+	./allValidOne 0x7
+	./allValidOne 0xc
+	./allValidOne 0x11
+	./allValidOne 0x3
+
+clean:
+	rm -rf $@ 

@@ -1,0 +1,19 @@
+CXX = gcc 
+CXXFLAGS = -g -Wall 
+
+SRC = ./count_one.c 
+OBJ = countOne
+
+$(OBJ):$(SRC)
+	$(CXX) $(CXXFLAGS) -o $@ $<
+
+
+test: countOne
+	./countOne 0xaa
+	./countOne 0xcc
+	./countOne 0xac
+	./countOne 0xff
+	./countOne 0x11
+
+clean:
+	rm -rf countOne
