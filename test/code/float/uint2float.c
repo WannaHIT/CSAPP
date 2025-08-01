@@ -1,5 +1,7 @@
 #include<stdio.h>
 // #include<string.h>
+// 这个程序是理解IEEE-754浮点表示的一个练习，
+// 它展示了如何将整数转换为对应的浮点数位表示
 #include<stdint.h>
 // #include<stdlib.h>
 
